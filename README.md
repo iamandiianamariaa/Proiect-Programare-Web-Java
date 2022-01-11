@@ -22,7 +22,10 @@ For using the application, the requests can be executed via ```swagger``` by goi
 <br>
 
 ### Testing
-![](https://i.postimg.cc/McNM8y01/Screenshot-2022-01-11-at-12-13-55.png)
+[![Screenshot-2022-01-11-at-12-17-12.png](https://i.postimg.cc/9M8yp99m/Screenshot-2022-01-11-at-12-17-12.png)](https://postimg.cc/sQWBfvKq)
+
+[![Screenshot-2022-01-11-at-12-13-55.png](https://i.postimg.cc/NMf1mD5C/Screenshot-2022-01-11-at-12-13-55.png)](https://postimg.cc/McNM8y01)
+
 Created unit tests for the services methods and for the REST endpoints. All tests passed with success with
 an average of **80%** line coverage for service and **81%** line coverage for controller.
 Tests can be run via IntelliJ interface or using the following command:

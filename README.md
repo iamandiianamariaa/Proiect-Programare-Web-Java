@@ -21,6 +21,8 @@
 5. Mapstruct
 6. Lombok
 7. Mockito
+8. Swagger
+9. Postman
 
 ### Documentation
 

@@ -3,6 +3,12 @@
 ## REST-API controller for managing a beauty online shop
 
 ### Entities
+1. User
+2. Order
+3. OrderDetails
+4. Product
+5. Review
+6. Category
 
 ### Technologies and libraries
 
@@ -20,6 +26,10 @@ For using the application, the requests can be executed via ```swagger``` by goi
 <br>
 ```http://localhost:8099/swagger-ui/#/```
 <br>
+
+[![Screenshot-2022-01-10-at-23-33-37.png](https://i.postimg.cc/KzZdT67X/Screenshot-2022-01-10-at-23-33-37.png)](https://postimg.cc/sBN6d00K)
+[![Screenshot-2022-01-10-at-23-33-31.png](https://i.postimg.cc/vm7JcYVL/Screenshot-2022-01-10-at-23-33-31.png)](https://postimg.cc/nszRWtTC)
+[![Screenshot-2022-01-10-at-23-33-50.png](https://i.postimg.cc/NMpZkdbK/Screenshot-2022-01-10-at-23-33-50.png)](https://postimg.cc/Ppv6tzgH)
 
 ### Testing
 [![Screenshot-2022-01-11-at-12-17-12.png](https://i.postimg.cc/9M8yp99m/Screenshot-2022-01-11-at-12-17-12.png)](https://postimg.cc/sQWBfvKq)

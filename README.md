@@ -10,6 +10,8 @@
 5. Review
 6. Category
 
+[![Blank-diagram.png](https://i.postimg.cc/VLNhByS1/Blank-diagram.png)](https://postimg.cc/QVRShykn)
+
 ### Technologies and libraries
 
 1. Spring boot

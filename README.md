@@ -24,7 +24,7 @@ For using the application, the requests can be executed via ```swagger``` by goi
 ### Testing
 
 Created unit tests for the services methods and for the REST endpoints. All tests passed with success with
-an average of **86%** line coverage for service and **81%** line coverage for controller.
+an average of **80%** line coverage for service and **81%** line coverage for controller.
 Tests can be run via IntelliJ interface or using the following command:
 <br>
 ```mvn test```

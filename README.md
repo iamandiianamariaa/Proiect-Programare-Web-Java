@@ -22,7 +22,7 @@ For using the application, the requests can be executed via ```swagger``` by goi
 <br>
 
 ### Testing
-![](Proiect-Programare-Web-Java/Screenshot 2022-01-11 at 12.13.55.png)
+![](https://i.postimg.cc/McNM8y01/Screenshot-2022-01-11-at-12-13-55.png)
 Created unit tests for the services methods and for the REST endpoints. All tests passed with success with
 an average of **80%** line coverage for service and **81%** line coverage for controller.
 Tests can be run via IntelliJ interface or using the following command:

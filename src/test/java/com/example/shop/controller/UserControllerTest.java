@@ -1,13 +1,9 @@
 package com.example.shop.controller;
 
-import com.example.shop.domain.Category;
 import com.example.shop.domain.User;
 import com.example.shop.domain.enums.UserType;
-import com.example.shop.dto.CategoryDto;
 import com.example.shop.dto.UserDto;
-import com.example.shop.mapper.CategoryMapper;
 import com.example.shop.mapper.UserMapper;
-import com.example.shop.service.CategoryService;
 import com.example.shop.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -22,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -47,19 +42,8 @@ class UserControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void createUser() throws Exception{
-        Long id = 1L;
-        String username = "john123";
-        String name = "john";
-        UserType userType = UserType.USER;
-        LocalDateTime dateAdded = LocalDateTime.now();
-
-        UserDto userDto = UserDto.builder()
-                .id(id)
-                .username(username)
-                .name(name)
-                .userType(userType)
-                .build();
+    void createUser() throws Exception {
+        UserDto userDto = getUserDto();
 
         when(userService.create(any())).thenReturn(userDto);
 
@@ -76,55 +60,23 @@ class UserControllerTest {
     @Test
     void getById() throws Exception {
         Long id = 1L;
-        String username = "john123";
-        String name = "john";
-        UserType userType = UserType.USER;
-        LocalDateTime dateAdded = LocalDateTime.now();
+        User user = getUser();
+        UserDto userDto = getUserDto();
 
-        UserDto userDto = UserDto.builder()
-                .id(id)
-                .username(username)
-                .name(name)
-                .userType(userType)
-                .build();
-        User user = User.builder()
-                .id(id)
-                .username(username)
-                .name(name)
-                .userType(userType)
-                .accountCreated(dateAdded)
-                .build();
         when(userMapper.mapToDto(user)).thenReturn(userDto);
         when(userService.checkIfUserHasAdminRole(ADMIN_ID)).thenReturn(Boolean.TRUE);
         when(userService.checkIfUserHasUserRole(USER_ID)).thenReturn(Boolean.TRUE);
         when(userService.getById(any())).thenReturn(user);
 
-        mockMvc.perform(get("/users/"+ ADMIN_ID + "/"+ USER_ID))
+        mockMvc.perform(get("/users/" + ADMIN_ID + "/" + USER_ID))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
     @Test
     void getAll() throws Exception {
-        Long id = 1L;
-        String username = "john123";
-        String name = "john";
-        UserType userType = UserType.USER;
-        LocalDateTime dateAdded = LocalDateTime.now();
-
-        UserDto userDto = UserDto.builder()
-                .id(id)
-                .username(username)
-                .name(name)
-                .userType(userType)
-                .build();
-        User user = User.builder()
-                .id(id)
-                .username(username)
-                .name(name)
-                .userType(userType)
-                .accountCreated(dateAdded)
-                .build();
+        User user = getUser();
+        UserDto userDto = getUserDto();
 
         List<User> dto = List.of(user);
 
@@ -138,26 +90,9 @@ class UserControllerTest {
     }
 
     @Test
-    void updateUser() throws Exception{
-        Long id = 1L;
-        String username = "john123";
-        String name = "john";
-        UserType userType = UserType.USER;
-        LocalDateTime dateAdded = LocalDateTime.now();
-
-        UserDto userDto = UserDto.builder()
-                .id(id)
-                .username(username)
-                .name(name)
-                .userType(userType)
-                .build();
-        User user = User.builder()
-                .id(id)
-                .username(username)
-                .name(name)
-                .userType(userType)
-                .accountCreated(dateAdded)
-                .build();
+    void updateUser() throws Exception {
+        User user = getUser();
+        UserDto userDto = getUserDto();
 
         when(userService.update(any(), any())).thenReturn(user);
         when(userMapper.mapToDto(user)).thenReturn(userDto);
@@ -174,8 +109,42 @@ class UserControllerTest {
     void deleteById() throws Exception {
         Long id = 1L;
 
-        mockMvc.perform(delete("/users/" +id))
+        mockMvc.perform(delete("/users/" + id))
                 .andExpect(status().isNoContent())
                 .andReturn();
+    }
+
+    UserDto getUserDto(){
+        Long id = 1L;
+        String username = "john123";
+        String name = "john";
+        UserType userType = UserType.USER;
+
+        UserDto userDto = UserDto.builder()
+                .id(id)
+                .username(username)
+                .name(name)
+                .userType(userType)
+                .build();
+
+        return userDto;
+    }
+
+    User getUser(){
+        Long id = 1L;
+        String username = "john123";
+        String name = "john";
+        UserType userType = UserType.USER;
+        LocalDateTime dateAdded = LocalDateTime.now();
+
+        User user = User.builder()
+                .id(id)
+                .username(username)
+                .name(name)
+                .userType(userType)
+                .accountCreated(dateAdded)
+                .build();
+
+        return user;
     }
 }

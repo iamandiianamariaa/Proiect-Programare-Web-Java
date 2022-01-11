@@ -1,13 +1,10 @@
 package com.example.shop.controller;
 
 import com.example.shop.domain.Order;
-import com.example.shop.domain.Review;
 import com.example.shop.domain.enums.Status;
 import com.example.shop.dto.OrderDto;
 import com.example.shop.dto.OrderRequestDto;
-import com.example.shop.mapper.CategoryMapper;
 import com.example.shop.mapper.OrderMapper;
-import com.example.shop.service.CategoryService;
 import com.example.shop.service.OrderService;
 import com.example.shop.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,12 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.security.UnresolvedPermission;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -51,30 +46,9 @@ class OrderControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void createOrder() throws Exception{
-        Long id = 1L;
-        Double price = 36.7;
-        Status status = Status.PLACED;
-        Integer noProducts = 1;
-        LocalDateTime dateAdded = LocalDateTime.now();
-        Long userId = 2L;
-        Long orderDetailsId = 3L;
-        List<Long> list = List.of(1L);
-
-        OrderRequestDto orderRequestDto = OrderRequestDto.builder()
-                .id(id)
-                .userId(userId)
-                .orderDetailsId(orderDetailsId)
-                .productIds(list)
-                .build();
-
-        OrderDto orderDto = OrderDto.builder()
-                .id(id)
-                .price(price)
-                .status(status)
-                .noProducts(noProducts)
-                .orderAddedDate(dateAdded)
-                .build();
+    void createOrder() throws Exception {
+        OrderDto orderDto = getOrderDto();
+        OrderRequestDto orderRequestDto = getOrderRequestDto();
 
         when(orderService.create(any())).thenReturn(orderDto);
 
@@ -90,58 +64,21 @@ class OrderControllerTest {
     @Test
     void getById() throws Exception {
         Long id = 1L;
-        Double price = 36.7;
-        Status status = Status.PLACED;
-        Integer noProducts = 1;
-        LocalDateTime dateAdded = LocalDateTime.now();
-
-        OrderDto orderDto = OrderDto.builder()
-                .id(id)
-                .price(price)
-                .status(status)
-                .noProducts(noProducts)
-                .orderAddedDate(dateAdded)
-                .build();
-
-        Order order = Order.builder()
-                .id(id)
-                .price(price)
-                .status(status)
-                .noProducts(noProducts)
-                .orderAddedDate(dateAdded)
-                .build();
+        OrderDto orderDto = getOrderDto();
+        Order order = getOrder();
 
         when(orderMapper.mapToDto(order)).thenReturn(orderDto);
         when(orderService.getById(any())).thenReturn(order);
 
-        mockMvc.perform(get("/orders/"+ id))
+        mockMvc.perform(get("/orders/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
     @Test
     void getAll() throws Exception {
-        Long id = 1L;
-        Double price = 36.7;
-        Status status = Status.PLACED;
-        Integer noProducts = 1;
-        LocalDateTime dateAdded = LocalDateTime.now();
-
-        OrderDto orderDto = OrderDto.builder()
-                .id(id)
-                .price(price)
-                .status(status)
-                .noProducts(noProducts)
-                .orderAddedDate(dateAdded)
-                .build();
-
-        Order order = Order.builder()
-                .id(id)
-                .price(price)
-                .status(status)
-                .noProducts(noProducts)
-                .orderAddedDate(dateAdded)
-                .build();
+        OrderDto orderDto = getOrderDto();
+        Order order = getOrder();
         List<Order> dto = List.of(order);
 
         when(orderMapper.mapToDto(order)).thenReturn(orderDto);
@@ -154,38 +91,12 @@ class OrderControllerTest {
     }
 
     @Test
-    void updateOrder() throws Exception{
+    void updateOrder() throws Exception {
         Long id = 1L;
-        Double price = 36.7;
-        Status status = Status.PLACED;
-        Integer noProducts = 1;
-        LocalDateTime dateAdded = LocalDateTime.now();
-        Long userId = 2L;
-        Long orderDetailsId = 3L;
-        List<Long> list = List.of(1L);
 
-        OrderDto orderDto = OrderDto.builder()
-                .id(id)
-                .price(price)
-                .status(status)
-                .noProducts(noProducts)
-                .orderAddedDate(dateAdded)
-                .build();
-
-        Order order = Order.builder()
-                .id(id)
-                .price(price)
-                .status(status)
-                .noProducts(noProducts)
-                .orderAddedDate(dateAdded)
-                .build();
-
-        OrderRequestDto orderRequestDto = OrderRequestDto.builder()
-                .id(id)
-                .userId(userId)
-                .orderDetailsId(orderDetailsId)
-                .productIds(list)
-                .build();
+        OrderDto orderDto = getOrderDto();
+        Order order = getOrder();
+        OrderRequestDto orderRequestDto = getOrderRequestDto();
 
         when(orderService.update(any(), any())).thenReturn(order);
         when(orderMapper.mapToDto(order)).thenReturn(orderDto);
@@ -199,28 +110,10 @@ class OrderControllerTest {
     }
 
     @Test
-    void updateOrderStatus()throws Exception {
+    void updateOrderStatus() throws Exception {
         Long id = 1L;
-        Double price = 36.7;
-        Status status = Status.PLACED;
-        Integer noProducts = 1;
-        LocalDateTime dateAdded = LocalDateTime.now();
-
-        OrderDto orderDto = OrderDto.builder()
-                .id(id)
-                .price(price)
-                .status(status)
-                .noProducts(noProducts)
-                .orderAddedDate(dateAdded)
-                .build();
-
-        Order order = Order.builder()
-                .id(id)
-                .price(price)
-                .status(status)
-                .noProducts(noProducts)
-                .orderAddedDate(dateAdded)
-                .build();
+        OrderDto orderDto = getOrderDto();
+        Order order = getOrder();
 
         Status updatedStatus = Status.SHIPPED;
 
@@ -240,8 +133,59 @@ class OrderControllerTest {
 
         when(userService.checkIfUserHasAdminRole(ADMIN_ID)).thenReturn(Boolean.TRUE);
 
-        mockMvc.perform(delete("/orders/" + ADMIN_ID+"/"+id))
+        mockMvc.perform(delete("/orders/" + ADMIN_ID + "/" + id))
                 .andExpect(status().isNoContent())
                 .andReturn();
+    }
+
+    Order getOrder(){
+        Long id = 1L;
+        Double price = 36.7;
+        Status status = Status.PLACED;
+        Integer noProducts = 1;
+        LocalDateTime dateAdded = LocalDateTime.now();
+
+        Order order = Order.builder()
+                .id(id)
+                .price(price)
+                .status(status)
+                .noProducts(noProducts)
+                .orderAddedDate(dateAdded)
+                .build();
+
+        return order;
+    }
+
+    OrderDto getOrderDto(){
+        Long id = 1L;
+        Double price = 36.7;
+        Status status = Status.PLACED;
+        Integer noProducts = 1;
+        LocalDateTime dateAdded = LocalDateTime.now();
+
+        OrderDto orderDto = OrderDto.builder()
+                .id(id)
+                .price(price)
+                .status(status)
+                .noProducts(noProducts)
+                .orderAddedDate(dateAdded)
+                .build();
+        return orderDto;
+    }
+
+    OrderRequestDto getOrderRequestDto(){
+        Long id = 1L;
+        Long userId = 2L;
+        Long orderDetailsId = 3L;
+        List<Long> list = List.of(1L);
+
+        OrderRequestDto orderRequestDto = OrderRequestDto.builder()
+                .id(id)
+                .userId(userId)
+                .orderDetailsId(orderDetailsId)
+                .productIds(list)
+                .build();
+
+        return orderRequestDto;
     }
 }

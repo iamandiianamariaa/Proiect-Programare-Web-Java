@@ -1,12 +1,9 @@
 package com.example.shop.controller;
 
 import com.example.shop.domain.Product;
-import com.example.shop.domain.Review;
 import com.example.shop.dto.ProductDto;
 import com.example.shop.dto.ProductRequestDto;
-import com.example.shop.mapper.CategoryMapper;
 import com.example.shop.mapper.ProductMapper;
-import com.example.shop.service.CategoryService;
 import com.example.shop.service.ProductService;
 import com.example.shop.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +18,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -48,44 +44,14 @@ class ProductControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void createProduct() throws Exception{
-        Long id = 1L;
-        String name = "Face cream";
-        String brand = "Nivea";
-        String size = "50 ml";
-        String description = "Hydrating face cream for dry skin";
-        String ingredients = "Water, Mineral Oil, Petrolatum, Glycerin, Microcrystalline Wax, Lanolin Alcohol, Paraffin";
-        String instructions = "Use twice a day";
-        Double price = 32.3;
-        Double reviewScore = 0.0;
-
-        ProductRequestDto productRequestDto = ProductRequestDto.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .build();
-
-        ProductDto productDto = ProductDto.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
+    void createProduct() throws Exception {
+        ProductDto productDto = getProductDto();
+        ProductRequestDto productRequestDto = getProductRequestDto();
 
         when(userService.checkIfUserHasAdminRole(ADMIN_ID)).thenReturn(Boolean.TRUE);
         when(productService.create(any())).thenReturn(productDto);
 
-        MvcResult result = mockMvc.perform(post("/products/"+ ADMIN_ID)
+        MvcResult result = mockMvc.perform(post("/products/" + ADMIN_ID)
                         .content(objectMapper.writeValueAsString(productRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -97,82 +63,21 @@ class ProductControllerTest {
     @Test
     void getById() throws Exception {
         Long id = 1L;
-        String name = "Face cream";
-        String brand = "Nivea";
-        String size = "50 ml";
-        String description = "Hydrating face cream for dry skin";
-        String ingredients = "Water, Mineral Oil, Petrolatum, Glycerin, Microcrystalline Wax, Lanolin Alcohol, Paraffin";
-        String instructions = "Use twice a day";
-        Double price = 32.3;
-        Double reviewScore = 0.0;
-
-        ProductDto productDto = ProductDto.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
-
-        Product product = Product.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
+        Product product = getProduct();
+        ProductDto productDto = getProductDto();
 
         when(productMapper.mapToDto(product)).thenReturn(productDto);
         when(productService.getById(any())).thenReturn(product);
 
-        mockMvc.perform(get("/products/"+ id))
+        mockMvc.perform(get("/products/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
     @Test
     void getProductByName() throws Exception {
-        Long id = 1L;
-        String name = "Face cream";
-        String brand = "Nivea";
-        String size = "50 ml";
-        String description = "Hydrating face cream for dry skin";
-        String ingredients = "Water, Mineral Oil, Petrolatum, Glycerin, Microcrystalline Wax, Lanolin Alcohol, Paraffin";
-        String instructions = "Use twice a day";
-        Double price = 32.3;
-        Double reviewScore = 0.0;
-
-        ProductDto productDto = ProductDto.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
-
-        Product product = Product.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
+        Product product = getProduct();
+        ProductDto productDto = getProductDto();
 
         String productName = "Face cream";
 
@@ -187,39 +92,8 @@ class ProductControllerTest {
 
     @Test
     void getProductsByBrandName() throws Exception {
-        Long id = 1L;
-        String name = "Face cream";
-        String brand = "Nivea";
-        String size = "50 ml";
-        String description = "Hydrating face cream for dry skin";
-        String ingredients = "Water, Mineral Oil, Petrolatum, Glycerin, Microcrystalline Wax, Lanolin Alcohol, Paraffin";
-        String instructions = "Use twice a day";
-        Double price = 32.3;
-        Double reviewScore = 0.0;
-
-        ProductDto productDto = ProductDto.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
-
-        Product product = Product.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
+        Product product = getProduct();
+        ProductDto productDto = getProductDto();
 
         String brandName = "Nivea";
         List<Product> dto = List.of(product);
@@ -235,39 +109,8 @@ class ProductControllerTest {
 
     @Test
     void getProductsByCategoryName() throws Exception {
-        Long id = 1L;
-        String name = "Face cream";
-        String brand = "Nivea";
-        String size = "50 ml";
-        String description = "Hydrating face cream for dry skin";
-        String ingredients = "Water, Mineral Oil, Petrolatum, Glycerin, Microcrystalline Wax, Lanolin Alcohol, Paraffin";
-        String instructions = "Use twice a day";
-        Double price = 32.3;
-        Double reviewScore = 0.0;
-
-        ProductDto productDto = ProductDto.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
-
-        Product product = Product.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
+        Product product = getProduct();
+        ProductDto productDto = getProductDto();
 
         String categoryName = "skin care";
         List<Product> dto = List.of(product);
@@ -283,39 +126,8 @@ class ProductControllerTest {
 
     @Test
     void getAll() throws Exception {
-        Long id = 1L;
-        String name = "Face cream";
-        String brand = "Nivea";
-        String size = "50 ml";
-        String description = "Hydrating face cream for dry skin";
-        String ingredients = "Water, Mineral Oil, Petrolatum, Glycerin, Microcrystalline Wax, Lanolin Alcohol, Paraffin";
-        String instructions = "Use twice a day";
-        Double price = 32.3;
-        Double reviewScore = 0.0;
-
-        ProductDto productDto = ProductDto.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
-
-        Product product = Product.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
+        Product product = getProduct();
+        ProductDto productDto = getProductDto();
 
         List<Product> dto = List.of(product);
 
@@ -330,49 +142,9 @@ class ProductControllerTest {
     @Test
     void updateProduct() throws Exception {
         Long id = 1L;
-        String name = "Face cream";
-        String brand = "Nivea";
-        String size = "50 ml";
-        String description = "Hydrating face cream for dry skin";
-        String ingredients = "Water, Mineral Oil, Petrolatum, Glycerin, Microcrystalline Wax, Lanolin Alcohol, Paraffin";
-        String instructions = "Use twice a day";
-        Double price = 32.3;
-        Double reviewScore = 0.0;
-
-        ProductRequestDto productRequestDto = ProductRequestDto.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .build();
-
-        ProductDto productDto = ProductDto.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
-
-        Product product = Product.builder()
-                .id(id)
-                .name(name)
-                .brand(brand)
-                .size(size)
-                .description(description)
-                .ingredients(ingredients)
-                .instructions(instructions)
-                .price(price)
-                .reviewScore(reviewScore)
-                .build();
+        Product product = getProduct();
+        ProductDto productDto = getProductDto();
+        ProductRequestDto productRequestDto = getProductRequestDto();
 
         when(productService.update(any(), any())).thenReturn(product);
         when(productMapper.mapToDto(product)).thenReturn(productDto);
@@ -391,8 +163,86 @@ class ProductControllerTest {
 
         when(userService.checkIfUserHasAdminRole(ADMIN_ID)).thenReturn(Boolean.TRUE);
 
-        mockMvc.perform(delete("/products/" + ADMIN_ID+"/"+id))
+        mockMvc.perform(delete("/products/" + ADMIN_ID + "/" + id))
                 .andExpect(status().isNoContent())
                 .andReturn();
     }
+
+    ProductRequestDto getProductRequestDto(){
+        Long id = 1L;
+        String name = "Face cream";
+        String brand = "Nivea";
+        String size = "50 ml";
+        String description = "Hydrating face cream for dry skin";
+        String ingredients = "Water, Mineral Oil, Petrolatum, Glycerin, Microcrystalline Wax, Lanolin Alcohol, Paraffin";
+        String instructions = "Use twice a day";
+        Double price = 32.3;
+
+        ProductRequestDto productRequestDto = ProductRequestDto.builder()
+                .id(id)
+                .name(name)
+                .brand(brand)
+                .size(size)
+                .description(description)
+                .ingredients(ingredients)
+                .instructions(instructions)
+                .price(price)
+                .build();
+
+        return productRequestDto;
+    }
+
+    ProductDto getProductDto(){
+        Long id = 1L;
+        String name = "Face cream";
+        String brand = "Nivea";
+        String size = "50 ml";
+        String description = "Hydrating face cream for dry skin";
+        String ingredients = "Water, Mineral Oil, Petrolatum, Glycerin, Microcrystalline Wax, Lanolin Alcohol, Paraffin";
+        String instructions = "Use twice a day";
+        Double price = 32.3;
+        Double reviewScore = 0.0;
+
+        ProductDto productDto = ProductDto.builder()
+                .id(id)
+                .name(name)
+                .brand(brand)
+                .size(size)
+                .description(description)
+                .ingredients(ingredients)
+                .instructions(instructions)
+                .price(price)
+                .reviewScore(reviewScore)
+                .build();
+
+        return productDto;
+    }
+
+    Product getProduct(){
+        Long id = 1L;
+        String name = "Face cream";
+        String brand = "Nivea";
+        String size = "50 ml";
+        String description = "Hydrating face cream for dry skin";
+        String ingredients = "Water, Mineral Oil, Petrolatum, Glycerin, Microcrystalline Wax, Lanolin Alcohol, Paraffin";
+        String instructions = "Use twice a day";
+        Double price = 32.3;
+        Double reviewScore = 0.0;
+
+        Product product = Product.builder()
+                .id(id)
+                .name(name)
+                .brand(brand)
+                .size(size)
+                .description(description)
+                .ingredients(ingredients)
+                .instructions(instructions)
+                .price(price)
+                .reviewScore(reviewScore)
+                .build();
+
+        return product;
+    }
+
+
 }

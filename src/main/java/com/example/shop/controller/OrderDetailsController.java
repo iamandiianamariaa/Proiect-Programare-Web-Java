@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 public class OrderDetailsController {
     @Autowired
     private OrderDetailsService orderDetailsService;
+
+    @Autowired
     private final OrderDetailsMapper orderDetailsMapper;
 
     @Autowired

@@ -1,15 +1,11 @@
 package com.example.shop.service;
 
 import com.example.shop.domain.Product;
-import com.example.shop.domain.Review;
 import com.example.shop.dto.ProductDto;
 import com.example.shop.dto.ProductRequestDto;
-import com.example.shop.dto.ReviewDto;
 import com.example.shop.exception.EntityNotFoundException;
 import com.example.shop.exception.ProductNotFoundException;
-import com.example.shop.mapper.OrderMapper;
 import com.example.shop.mapper.ProductMapper;
-import com.example.shop.repository.OrderRepository;
 import com.example.shop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

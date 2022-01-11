@@ -21,7 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = CategoryController.class)
 class CategoryControllerTest {
@@ -46,25 +47,15 @@ class CategoryControllerTest {
     @Test
     @DisplayName("Create category")
     void createCategory() throws Exception {
-        Long id = 1L;
-        String name = "skin care";
+        Category category = getCategory();
+        CategoryDto categoryDto = getCategoryDto();
 
-        Category category = Category.builder()
-                .id(id)
-                .name(name)
-                .build();
+        when(categoryMapper.mapToEntity(categoryDto)).thenReturn(category);
+        when(categoryMapper.mapToDto(category)).thenReturn(categoryDto);
+        when(userService.checkIfUserHasAdminRole(ADMIN_ID)).thenReturn(Boolean.TRUE);
+        when(categoryService.create(any())).thenReturn(category);
 
-        CategoryDto categoryDto = CategoryDto.builder()
-                .id(id)
-                .name(name)
-                .build();
-
-       when(categoryMapper.mapToEntity(categoryDto)).thenReturn(category);
-       when(categoryMapper.mapToDto(category)).thenReturn(categoryDto);
-       when(userService.checkIfUserHasAdminRole(ADMIN_ID)).thenReturn(Boolean.TRUE);
-       when(categoryService.create(any())).thenReturn(category);
-
-        MvcResult result = mockMvc.perform(post("/categories/"+ ADMIN_ID)
+        MvcResult result = mockMvc.perform(post("/categories/" + ADMIN_ID)
                         .content(objectMapper.writeValueAsString(categoryDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -77,22 +68,13 @@ class CategoryControllerTest {
     @DisplayName("Get category by id")
     void getById() throws Exception {
         Long id = 1L;
-        String name = "skin care";
-
-        Category category = Category.builder()
-                .id(id)
-                .name(name)
-                .build();
-
-        CategoryDto categoryDto = CategoryDto.builder()
-                .id(id)
-                .name(name)
-                .build();
+        Category category = getCategory();
+        CategoryDto categoryDto = getCategoryDto();
 
         when(categoryMapper.mapToDto(category)).thenReturn(categoryDto);
         when(categoryService.getById(any())).thenReturn(category);
 
-        mockMvc.perform(get("/categories/"+ id))
+        mockMvc.perform(get("/categories/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
@@ -100,18 +82,9 @@ class CategoryControllerTest {
     @Test
     @DisplayName("Get all categories")
     void getAll() throws Exception {
-        Long id = 1L;
-        String name = "skin care";
+        Category category = getCategory();
+        CategoryDto categoryDto = getCategoryDto();
 
-        Category category = Category.builder()
-                .id(id)
-                .name(name)
-                .build();
-
-        CategoryDto categoryDto = CategoryDto.builder()
-                .id(id)
-                .name(name)
-                .build();
         List<Category> dto = List.of(category);
 
         when(categoryMapper.mapToDto(category)).thenReturn(categoryDto);
@@ -125,25 +98,17 @@ class CategoryControllerTest {
     @Test
     @DisplayName("Update category")
     void updateCategory() throws Exception {
-        Long id = 1L;
-        String name = "skin care";
-        Category category = Category.builder()
-                .id(id)
-                .name(name)
-                .build();
+        Category category = getCategory();
+        CategoryDto categoryDto = getCategoryDto();
 
-        CategoryDto categoryDto = CategoryDto.builder()
-                .id(id)
-                .name(name)
-                .build();
         when(categoryService.update(any(), any())).thenReturn(category);
         when(categoryMapper.mapToDto(category)).thenReturn(categoryDto);
         when(userService.checkIfUserHasAdminRole(ADMIN_ID)).thenReturn(Boolean.TRUE);
         when(userService.checkIfUserHasUserRole(USER_ID)).thenReturn(Boolean.TRUE);
 
         mockMvc.perform(put("/categories/" + ADMIN_ID + "/" + USER_ID)
-                .content(objectMapper.writeValueAsString(categoryDto))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsString(categoryDto))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -156,8 +121,28 @@ class CategoryControllerTest {
 
         when(userService.checkIfUserHasAdminRole(ADMIN_ID)).thenReturn(Boolean.TRUE);
 
-        mockMvc.perform(delete("/categories/" + ADMIN_ID+"/"+id))
+        mockMvc.perform(delete("/categories/" + ADMIN_ID + "/" + id))
                 .andExpect(status().isNoContent())
                 .andReturn();
+    }
+
+    Category getCategory(){
+        Long id = 1L;
+        String name = "skin care";
+        Category category = Category.builder()
+                .id(id)
+                .name(name)
+                .build();
+        return category;
+    }
+
+    CategoryDto getCategoryDto(){
+        Long id = 1L;
+        String name = "skin care";
+        CategoryDto categoryDto = CategoryDto.builder()
+                .id(id)
+                .name(name)
+                .build();
+        return categoryDto;
     }
 }

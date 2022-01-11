@@ -149,6 +149,12 @@ class CategoryServiceTest {
     void deleteAddress() {
         Long id = 1L;
 
+        Category category1 = Category.builder()
+                .id(1L)
+                .name("skin care")
+                .build();
+
+        when(categoryRepository.findById(id)).thenReturn(Optional.ofNullable(category1));
         doNothing().when(categoryRepository).deleteById(id);
 
         categoryService.deleteById(id);

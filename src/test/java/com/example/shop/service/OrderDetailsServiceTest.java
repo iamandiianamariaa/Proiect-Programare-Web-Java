@@ -217,7 +217,17 @@ class OrderDetailsServiceTest {
     @DisplayName("Delete order details")
     void deleteOrderDetails() {
         Long id = 1L;
+        OrderDetails orderDetails1 = OrderDetails.builder()
+                .id(1L)
+                .customerName("ana")
+                .phone("04683")
+                .city("Bucuresti")
+                .country("Romania")
+                .street("Str. Lalelelor")
+                .paymentMode(PaymentMode.CASH)
+                .build();
 
+        when(orderDetailsRepository.findById(id)).thenReturn(Optional.ofNullable(orderDetails1));
         doNothing().when(orderDetailsRepository).deleteById(id);
 
         orderDetailsService.deleteById(id);

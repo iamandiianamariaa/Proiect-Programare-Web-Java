@@ -254,6 +254,7 @@ class ReviewServiceTest {
                 .build();
 
         doNothing().when(reviewRepository).deleteById(id);
+        when(reviewRepository.findById(id)).thenReturn(Optional.ofNullable(review));
         when(reviewRepository.findById(id)).thenReturn(Optional.of(review));
         doNothing().when(productRepository).setAverageScore(review.getProduct().getId());
 

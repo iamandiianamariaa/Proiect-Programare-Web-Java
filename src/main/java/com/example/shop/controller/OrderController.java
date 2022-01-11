@@ -6,6 +6,7 @@ import com.example.shop.dto.OrderRequestDto;
 import com.example.shop.mapper.OrderMapper;
 import com.example.shop.service.OrderService;
 import com.example.shop.validator.ValidAdmin;
+import com.example.shop.validator.ValidUser;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +61,23 @@ public class OrderController {
             summary = "Get all orders"
     )
     public ResponseEntity<List<OrderDto>> getAll(@PathVariable @ValidAdmin Long adminId) {
-
         List<OrderDto> result = orderService.getAll()
+                .stream().map(orderMapper::mapToDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity
+                .ok()
+                .body(result);
+    }
+
+    @GetMapping("/all/{userId}")
+    @Operation(
+            method = "GET",
+            summary = "Get all orders for user id"
+    )
+    public ResponseEntity<List<OrderDto>> getAllOrdersForUserId(@PathVariable Long userId) {
+
+        List<OrderDto> result = orderService.getAllOrdersByUserId(userId)
                 .stream().map(orderMapper::mapToDto)
                 .collect(Collectors.toList());
 
@@ -79,7 +95,6 @@ public class OrderController {
                                                 @PathVariable Long orderId,
                                                 @RequestBody @Valid OrderRequestDto orderRequestDto) {
         Order savedOrder = orderService.update(orderId, orderRequestDto);
-
         return ResponseEntity
                 .ok()
                 .body(orderMapper.mapToDto(savedOrder));
@@ -94,7 +109,6 @@ public class OrderController {
                                                       @PathVariable Long orderId,
                                                       @RequestParam(value = "status") String status) {
         Order savedOrder = orderService.updateOrderStatus(orderId, status);
-
         return ResponseEntity
                 .ok()
                 .body(orderMapper.mapToDto(savedOrder));

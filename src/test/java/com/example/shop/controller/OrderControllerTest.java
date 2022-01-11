@@ -91,6 +91,21 @@ class OrderControllerTest {
     }
 
     @Test
+    void getAllForUserId() throws Exception {
+        Long id = 1L;
+        OrderDto orderDto = getOrderDto();
+        Order order = getOrder();
+        List<Order> dto = List.of(order);
+
+        when(orderMapper.mapToDto(order)).thenReturn(orderDto);
+        when(orderService.getAllOrdersByUserId(id)).thenReturn(dto);
+
+        mockMvc.perform(get("/orders/" + "all/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
     void updateOrder() throws Exception {
         Long id = 1L;
 

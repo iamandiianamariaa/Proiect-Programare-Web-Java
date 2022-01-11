@@ -265,7 +265,15 @@ class OrderServiceTest {
     @DisplayName("Delete order")
     void deleteOrder() {
         Long id = 1L;
+        Order order1 = Order.builder()
+                .id(id)
+                .price(354.3)
+                .status(Status.PLACED)
+                .noProducts(5)
+                .orderAddedDate(LocalDateTime.now())
+                .build();
 
+        when(orderRepository.findById(id)).thenReturn(Optional.ofNullable(order1));
         doNothing().when(orderRepository).deleteById(id);
 
         orderService.deleteById(id);

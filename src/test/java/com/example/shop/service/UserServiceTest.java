@@ -198,6 +198,15 @@ class UserServiceTest {
     void deleteUser() {
         Long id = 1L;
 
+        User user1 = User.builder()
+                .id(1L)
+                .name("john")
+                .username("john123")
+                .userType(UserType.USER)
+                .accountCreated(LocalDateTime.now())
+                .build();
+
+        when(userRepository.findById(id)).thenReturn(Optional.ofNullable(user1));
         doNothing().when(userRepository).deleteById(id);
 
         userService.deleteById(id);

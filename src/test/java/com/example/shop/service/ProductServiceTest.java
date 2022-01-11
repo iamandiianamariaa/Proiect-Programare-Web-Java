@@ -256,6 +256,19 @@ class ProductServiceTest {
     @DisplayName("Delete product")
     void deleteProduct() {
         Long id = 1L;
+        Product product1 = Product.builder()
+                .id(id)
+                .name("face cream")
+                .brand("Nivea")
+                .size("50 ml")
+                .description("face cream for dry skin")
+                .ingredients("ffd")
+                .instructions("Use twice a day")
+                .price(32.3)
+                .reviewScore(3.6)
+                .build();
+
+        when(productRepository.findById(id)).thenReturn(Optional.ofNullable(product1));
         doNothing().when(productRepository).deleteById(id);
 
         productService.deleteById(id);

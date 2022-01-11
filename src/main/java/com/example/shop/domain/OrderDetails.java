@@ -47,7 +47,6 @@ public class OrderDetails {
 
     @Column(name = "payment_mode")
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "Payment mode must not be null")
     private PaymentMode paymentMode;
 
     @OneToOne(mappedBy = "orderDetails", orphanRemoval = true, fetch = FetchType.LAZY)

@@ -92,5 +92,5 @@ CREATE TABLE ordered_products
 
     PRIMARY KEY (id),
     FOREIGN KEY (product_id) REFERENCES products (id),
-    FOREIGN KEY (order_id) REFERENCES orders (id)
+    FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE
 );

@@ -28,7 +28,6 @@ public class ProductDto {
     @NotNull(message = "Price must not be null")
     private Double price;
 
-    @NotBlank
     @NotNull(message = "Size must not be null")
     private String size;
 

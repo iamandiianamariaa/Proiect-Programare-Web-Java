@@ -32,7 +32,7 @@ public class Review {
 
     @Column(name = "rating")
     @Min(0)
-    @NotBlank(message = "Rating must not be null")
+    @NotNull(message = "Rating must not be null")
     private Double rating;
 
     @Column(name = "review_date")

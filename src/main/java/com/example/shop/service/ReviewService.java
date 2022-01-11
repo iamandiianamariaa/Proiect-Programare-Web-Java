@@ -57,8 +57,10 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
+    @Transactional
     public void deleteById(Long id) {
+        Long product = getById(id).getProduct().getId();
         reviewRepository.deleteById(id);
-        productRepository.setAverageScore(getById(id).getProduct().getId());
+        productRepository.setAverageScore(product);
     }
 }

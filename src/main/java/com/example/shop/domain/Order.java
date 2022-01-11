@@ -22,12 +22,10 @@ public class Order {
     private Long id;
 
     @Column(name = "price")
-    @NotBlank(message = "Price must not be null")
     private Double price;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "Status must not be null")
     private Status status;
 
     @Column(name = "no_products")

@@ -44,6 +44,7 @@ public class CategoryService {
     }
 
     public void deleteById(Long id) {
+        getById(id);
         categoryRepository.deleteById(id);
     }
 }

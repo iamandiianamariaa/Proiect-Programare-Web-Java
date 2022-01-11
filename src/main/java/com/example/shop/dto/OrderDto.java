@@ -23,7 +23,6 @@ public class OrderDto {
     private Double price;
 
     @NotNull(message = "Status must not be null")
-    @NotBlank
     private Status status;
 
 

@@ -30,7 +30,7 @@ public class Product {
 
     @Column(name = "price")
     @Max(2000)
-    @NotBlank(message = "Price must not be null")
+    @NotNull(message = "Price must not be null")
     private Double price;
 
     @Column(name = "size")
@@ -51,7 +51,7 @@ public class Product {
 
     @Column(name = "review_score")
     @Min(0)
-    @NotBlank(message = "Review score must not be null")
+    @NotNull(message = "Review score must not be null")
     private Double reviewScore;
 
     @OneToMany(mappedBy = "product", orphanRemoval = true, fetch = FetchType.LAZY)

@@ -43,6 +43,7 @@ public class OrderDetailsService {
     }
 
     public void deleteById(Long id) {
+        getById(id);
         orderDetailsRepository.deleteById(id);
     }
 }

@@ -101,7 +101,7 @@ public class ProductService {
     }
 
     public List<Product> getProductsOrderedByNoReviewsDescending() {
-        return getAll().stream().sorted(Comparator.comparingInt(p -> p.getReviews().size())).collect(Collectors.toList());
+        return getAll().stream().sorted(Collections.reverseOrder(Comparator.comparingInt(p -> p.getReviews().size()))).collect(Collectors.toList());
     }
 
 }

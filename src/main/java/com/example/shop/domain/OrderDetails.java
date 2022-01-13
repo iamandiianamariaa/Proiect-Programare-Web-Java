@@ -49,6 +49,6 @@ public class OrderDetails {
     @Enumerated(EnumType.STRING)
     private PaymentMode paymentMode;
 
-    @OneToOne(mappedBy = "orderDetails", orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "orderDetails", fetch = FetchType.LAZY)
     private Order order;
 }
